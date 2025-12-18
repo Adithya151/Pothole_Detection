@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Janadhvani | Road Safety AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="#" class="logo">
+    <i class="fa-solid fa-road"></i> <span>Janadhvani</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#workflow">How it Works</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="/detect-page" class="btn">Launch AI</a></li>
+  </ul>
+</nav>
+
+<!-- Hero Section -->
+<header class="hero">
+  <div class="animate-entry">
+    <h1>Smart Roads for <br><span>Smart Citizens</span></h1>
+    <p>Janadhvani uses advanced AI to detect, analyze, and map road defects in real-time. Join the movement for safer infrastructure.</p>
+    <a href="/detect-page" class="btn big animate-entry delay-1">Start Detection <i class="fa-solid fa-arrow-right"></i></a>
+  </div>
+</header>
+
+<!-- Features Section -->
+<section id="features" class="section">
+  <div class="animate-entry">
+    <h2>Core Capabilities</h2>
+  </div>
+  <div class="cards">
+    <div class="card animate-entry delay-1">
+      <i class="fa-solid fa-camera"></i>
+      <h3>Live Vision</h3>
+      <p>Seamless pothole detection using smartphone cameras.</p>
+    </div>
+    <div class="card animate-entry delay-2">
+      <i class="fa-solid fa-brain"></i>
+      <h3>YOLOv8 AI Core</h3>
+      <p>High-precision neural network for severity analysis.</p>
+    </div>
+    <div class="card animate-entry delay-3">
+      <i class="fa-solid fa-map-location-dot"></i>
+      <h3>Geo-Tagging</h3>
+      <p>Automatic GPS mapping for municipal reporting.</p>
+    </div>
+    <div class="card animate-entry delay-1">
+      <i class="fa-solid fa-file-pdf"></i>
+      <h3>Auto Reports</h3>
+      <p>Generate detailed complaints with one click.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Workflow Section -->
+<section id="workflow" class="section" style="background: #111827;">
+  <h2>System Workflow</h2>
+  <div class="timeline">
+    <div class="timeline-item animate-entry">
+      <span class="timeline-number">01</span>
+      <div>
+        <h3>Capture</h3>
+        <p>Point camera at the road surface while driving or walking.</p>
+      </div>
+    </div>
+    <div class="timeline-item animate-entry delay-1">
+      <span class="timeline-number">02</span>
+      <div>
+        <h3>Analyze</h3>
+        <p>AI processes the frame to identify depth and width of defects.</p>
+      </div>
+    </div>
+    <div class="timeline-item animate-entry delay-2">
+      <span class="timeline-number">03</span>
+      <div>
+        <h3>Report</h3>
+        <p>Data is sent to the central server with precise location.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPROVED CONTACT SECTION -->
+<section id="contact" class="section">
+  <!-- Moving Grid Background -->
+  <div class="cyber-grid"></div>
+  
+  <div class="contact-card animate-entry">
+    <h2>Get In Touch</h2>
+    <p style="margin-bottom: 25px; color: #cbd5e1;">
+      Helping build the Smart Cities of tomorrow.<br>
+      Have a suggestion or found a bug in the AI?
+    </p>
+    <a href="mailto:support@janadhvani.ai" class="btn pulse-btn">
+      <i class="fa-solid fa-envelope"></i> Contact Support
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Janadhvani | Powered by AI & Civic Data</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+        entry.target.style.opacity = 1;
+      }
+    });
+  });
+  document.querySelectorAll('.animate-entry').forEach((el) => observer.observe(el));
+</script>
+
+</body>
+</html>  

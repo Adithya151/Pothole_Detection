@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Road Health Reporter | Professional Infrastructure Audit</title>
+  <!-- Google Fonts for professional typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons for visual cues -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --accent: #f59e0b;
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* Decorative background elements */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: var(--primary);
+      filter: blur(120px);
+      border-radius: 50%;
+      top: 10%;
+      left: 10%;
+      opacity: 0.15;
+      z-index: -1;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2rem;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 3rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Left Side: Info */
+    .info-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(37, 99, 235, 0.2);
+      color: #60a5fa;
+      padding: 6px 12px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+      width: fit-content;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    /* Right Side: Form */
+    .form-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 12px;
+      color: var(--primary);
+      width: 18px;
+    }
+
+    input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 12px 12px 12px 40px;
+      color: white;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .btn-submit:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+    }
+
+    .road-line {
+      position: absolute;
+      left: 20px;
+      top: 45px;
+      bottom: -15px;
+      width: 2px;
+      border-left: 2px dashed var(--glass-border);
+      z-index: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+      }
+      .info-section { text-align: center; align-items: center; }
+      h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Brand Side -->
+  <div class="info-section">
+    <span class="badge">Civil AI Assistant</span>
+    <h1>Road Health <br>Audit Report</h1>
+    <p>Generate high-fidelity, data-driven road infrastructure assessments. Perfect for municipal complaints, safety audits, and urban planning.</p>
+    
+    <!-- Feature list -->
+    <div style="font-size: 0.9rem; color: var(--text-muted);">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom: 10px;">
+            <i data-lucide="check-circle" style="width:16px; color:var(--accent)"></i> Real-time satellite analysis
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <i data-lucide="check-circle" style="width:16px; color:var(--accent)"></i> Automated pothole detection
+        </div>
+    </div>
+  </div>
+
+  <!-- Form Side -->
+  <div class="form-card">
+    <form method="POST" action="/generate-report">
+      
+      <div class="input-group">
+        <label>Start Point</label>
+        <div class="input-wrapper">
+          <i data-lucide="map-pin"></i>
+          <input type="text" name="source" required placeholder="Source location...">
+        </div>
+        <div class="road-line"></div>
+      </div>
+
+      <div class="input-group" style="margin-top: 2.5rem;">
+        <label>End Point</label>
+        <div class="input-wrapper">
+          <i data-lucide="navigation"></i>
+          <input type="text" name="destination" required placeholder="Destination location...">
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        <span>Generate Professional Report</span>
+        <i data-lucide="arrow-right" style="width: 18px;"></i>
+      </button>
+    </form>
+    
+    <p style="font-size: 0.7rem; text-align: center; margin-top: 1.5rem; margin-bottom: 0;">
+      Official PDF format ready for submission.
+    </p>
+  </div>
+</div>
+<footer>
+  <p>© 2025 Janadhvani | Powered by AI & Civic Data</p>
+</footer>
+
+<script>
+  // Initialize Lucide icons
+  lucide.createIcons();
+</script>
+
+</body>
+</html>
