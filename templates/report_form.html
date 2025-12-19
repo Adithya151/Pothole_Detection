@@ -1,69 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Road Health Reporter | Professional Infrastructure Audit</title>
-  <!-- Google Fonts for professional typography -->
+  <title>Generate Report | Janadhvani</title>
+
+  <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <!-- Lucide Icons for visual cues -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://unpkg.com/lucide@latest"></script>
+
   <style>
+    /* ========== VARIABLES ========== */
     :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --accent: #f59e0b;
-      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      --glass: rgba(255, 255, 255, 0.03);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --secondary: #6366f1;
+      --accent: #f43f5e;
+      --dark: #0f172a;
+      --darker: #020617;
+      --light: #f8fafc;
+      --glass: rgba(15, 23, 42, 0.7);
+      --border: rgba(255,255,255,0.1);
+      --shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--bg-gradient);
-      background-attachment: fixed;
-      color: var(--text-main);
+      background: var(--darker);
+      color: var(--light);
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
+    }
+
+    /* ========== NAVBAR ========== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 72px;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
       align-items: center;
-      justify-content: center;
-      overflow-x: hidden;
+      justify-content: space-between;
+      padding: 0 5%;
+      z-index: 1000;
     }
 
-    /* Decorative background elements */
-    body::before {
-      content: "";
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      background: var(--primary);
-      filter: blur(120px);
-      border-radius: 50%;
-      top: 10%;
-      left: 10%;
-      opacity: 0.15;
-      z-index: -1;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
     }
 
+    .logo span {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      color: #cbd5f5;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    /* ========== PAGE OFFSET (IMPORTANT FIX) ========== */
+    .page-offset {
+      padding-top: 100px; /* Navbar height + spacing */
+      flex: 1;
+    }
+
+    /* ========== MAIN CONTAINER ========== */
     .container {
-      width: 90%;
       max-width: 1000px;
+      margin: auto;
       display: grid;
       grid-template-columns: 1.2fr 1fr;
-      gap: 2rem;
-      background: var(--glass);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 24px;
-      padding: 3rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      gap: 2.5rem;
+      padding: 0 5%;
     }
 
-    /* Left Side: Info */
+    /* ========== INFO SECTION ========== */
     .info-section {
       display: flex;
       flex-direction: column;
@@ -71,190 +112,205 @@
     }
 
     .badge {
-      display: inline-block;
-      background: rgba(37, 99, 235, 0.2);
-      color: #60a5fa;
-      padding: 6px 12px;
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 1.5rem;
       width: fit-content;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: rgba(59,130,246,0.2);
+      color: #93c5fd;
+      margin-bottom: 1rem;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.6rem;
       font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
       background: linear-gradient(to right, #fff, #94a3b8);
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: transparent;
     }
 
-    p {
-      color: var(--text-muted);
-      line-height: 1.6;
+    .description {
+      color: #94a3b8;
+      font-size: 1rem;
       margin-bottom: 2rem;
     }
 
-    /* Right Side: Form */
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #cbd5f5;
+      margin-bottom: 12px;
+    }
+
+    /* ========== FORM CARD ========== */
     .form-card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 2rem;
+      background: rgba(30,41,59,0.85);
+      backdrop-filter: blur(14px);
+      padding: 2.2rem;
       border-radius: 20px;
-      border: 1px solid var(--glass-border);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
 
     .input-group {
-      margin-bottom: 1.5rem;
-      position: relative;
+      margin-bottom: 1.4rem;
     }
 
-    .input-group label {
-      display: block;
-      font-size: 0.85rem;
+    label {
+      font-size: 0.75rem;
       font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--text-muted);
+      color: #94a3b8;
+      margin-bottom: 6px;
+      display: block;
     }
 
     .input-wrapper {
       position: relative;
-      display: flex;
-      align-items: center;
     }
 
     .input-wrapper i {
       position: absolute;
-      left: 12px;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
       color: var(--primary);
-      width: 18px;
     }
 
     input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid var(--glass-border);
+      padding: 14px 14px 14px 44px;
       border-radius: 12px;
-      padding: 12px 12px 12px 40px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.35);
       color: white;
-      font-size: 1rem;
-      transition: all 0.3s ease;
+      font-size: 0.95rem;
     }
 
     input:focus {
       outline: none;
       border-color: var(--primary);
-      background: rgba(0, 0, 0, 0.4);
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
     }
 
     .btn-submit {
       width: 100%;
-      background: var(--primary);
-      color: white;
-      border: none;
       padding: 16px;
       border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      color: white;
+      font-weight: 700;
       font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
       display: flex;
-      align-items: center;
       justify-content: center;
       gap: 10px;
-      transition: all 0.3s ease;
-      margin-top: 1rem;
+      cursor: pointer;
     }
 
-    .btn-submit:hover {
-      background: var(--primary-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+    /* ========== FOOTER ========== */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.75rem;
+      color: #64748b;
+      background: var(--dark);
+      border-top: 1px solid var(--border);
     }
 
-    .road-line {
-      position: absolute;
-      left: 20px;
-      top: 45px;
-      bottom: -15px;
-      width: 2px;
-      border-left: 2px dashed var(--glass-border);
-      z-index: 0;
-    }
-
-    /* Responsive */
+    /* ========== MOBILE ========== */
     @media (max-width: 768px) {
       .container {
         grid-template-columns: 1fr;
-        padding: 2rem;
+        gap: 2rem;
       }
-      .info-section { text-align: center; align-items: center; }
-      h1 { font-size: 2rem; }
+
+      h1 {
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      .info-section {
+        text-align: center;
+      }
+
+      .nav-links {
+        display: none;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="container">
-  <!-- Brand Side -->
-  <div class="info-section">
-    <span class="badge">Civil AI Assistant</span>
-    <h1>Road Health <br>Audit Report</h1>
-    <p>Generate high-fidelity, data-driven road infrastructure assessments. Perfect for municipal complaints, safety audits, and urban planning.</p>
-    
-    <!-- Feature list -->
-    <div style="font-size: 0.9rem; color: var(--text-muted);">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom: 10px;">
-            <i data-lucide="check-circle" style="width:16px; color:var(--accent)"></i> Real-time satellite analysis
-        </div>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <i data-lucide="check-circle" style="width:16px; color:var(--accent)"></i> Automated pothole detection
-        </div>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="/" class="logo">
+    <i class="fa-solid fa-road"></i>
+    <span>Janadhvani</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/detect-page">Dashboard</a></li>
+    <li><a href="/">Home</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="page-offset">
+  <div class="container">
+
+    <div class="info-section">
+      <span class="badge">AI Civil Assistant</span>
+      <h1>Road Health Audit Report</h1>
+      <p class="description">
+        Generate structured road condition reports for municipal complaints and infrastructure audits.
+      </p>
+
+      <div class="feature">
+        <i data-lucide="check-circle"></i> GPS-based route analysis
+      </div>
+      <div class="feature">
+        <i data-lucide="check-circle"></i> AI pothole severity scoring
+      </div>
     </div>
-  </div>
 
-  <!-- Form Side -->
-  <div class="form-card">
-    <form method="POST" action="/generate-report">
-      
-      <div class="input-group">
-        <label>Start Point</label>
-        <div class="input-wrapper">
-          <i data-lucide="map-pin"></i>
-          <input type="text" name="source" required placeholder="Source location...">
+    <div class="form-card">
+      <form method="POST" action="/generate-report">
+
+        <div class="input-group">
+          <label>Start Location</label>
+          <div class="input-wrapper">
+            <i data-lucide="map-pin"></i>
+            <input type="text" name="source" required placeholder="Enter source location">
+          </div>
         </div>
-        <div class="road-line"></div>
-      </div>
 
-      <div class="input-group" style="margin-top: 2.5rem;">
-        <label>End Point</label>
-        <div class="input-wrapper">
-          <i data-lucide="navigation"></i>
-          <input type="text" name="destination" required placeholder="Destination location...">
+        <div class="input-group">
+          <label>End Location</label>
+          <div class="input-wrapper">
+            <i data-lucide="navigation"></i>
+            <input type="text" name="destination" required placeholder="Enter destination">
+          </div>
         </div>
-      </div>
 
-      <button type="submit" class="btn-submit">
-        <span>Generate Professional Report</span>
-        <i data-lucide="arrow-right" style="width: 18px;"></i>
-      </button>
-    </form>
-    
-    <p style="font-size: 0.7rem; text-align: center; margin-top: 1.5rem; margin-bottom: 0;">
-      Official PDF format ready for submission.
-    </p>
+        <button type="submit" class="btn-submit">
+          Generate Report
+          <i data-lucide="arrow-right"></i>
+        </button>
+      </form>
+    </div>
+
   </div>
 </div>
+
+<!-- FOOTER -->
 <footer>
-  <p>© 2025 Janadhvani | Powered by AI & Civic Data</p>
+  © 2025 Janadhvani | Powered by AI & Civic Data
 </footer>
 
 <script>
-  // Initialize Lucide icons
   lucide.createIcons();
 </script>
 

@@ -12,19 +12,16 @@
 <body>
 
 <nav class="navbar">
-  <!-- Back to Home -->
   <a href="/" class="logo">
     <i class="fa-solid fa-arrow-left"></i>
     <span>Home</span>
   </a>
 
-  <!-- Page Title -->
   <h3>
     <i class="fa-solid fa-satellite-dish"></i>
     Live Road Analyzer
   </h3>
 
-  <!-- Generate Report -->
   <a href="/report" class="btn"
      style="background: var(--dark); border: 1px solid var(--primary);">
     <i class="fa-solid fa-file-lines"></i>
@@ -32,13 +29,11 @@
   </a>
 </nav>
 
-
 <div class="dashboard-container">
-  
-  <!-- Left Side: Camera Feed -->
+
   <div class="cam-wrapper animate-entry">
     <video id="video" autoplay playsinline></video>
-    <img id="captured-preview" 
+    <img id="captured-preview"
      style="display:none; width:100%; margin-top:10px; border-radius:10px; border:1px solid #334155;">
 
     <div class="scanner-line"></div>
@@ -46,12 +41,13 @@
     <canvas id="canvas" hidden></canvas>
   </div>
 
-  <!-- Right Side: Controls & Map -->
   <div class="sidebar">
-    
+
     <div class="info-panel animate-entry delay-1">
       <h4><i class="fa-solid fa-circle-info"></i> Detection Status</h4>
-      <p id="status-text" style="color: #94a3b8; margin-top: 10px;">System Ready. Waiting for input...</p>
+      <p id="status-text" style="color: #94a3b8; margin-top: 10px;">
+        System Ready. Waiting for input...
+      </p>
       <div id="stats" style="margin-top: 15px; font-family: monospace;">
         <div>GPS: <span id="gps-status" style="color: var(--accent)">Locating...</span></div>
         <div>FPS: <span id="fps-count">--</span></div>
@@ -64,7 +60,8 @@
     </div>
 
     <button onclick="capture()" class="capture-btn animate-entry delay-3">
-      <i class="fa-solid fa-camera-shutter"></i> Analyze Road Surface
+      <i class="fa-solid fa-camera-shutter"></i>
+      Analyze Road Surface
     </button>
   </div>
 
@@ -146,8 +143,6 @@ function capture() {
     fetch("/detect", { method: "POST", body: data })
       .then(r => r.json())
       .then(d => {
-        console.log("API RESPONSE:", d);
-
         document.getElementById("fps-count").innerText = d.fps || "API";
 
         if (d.count === 0) {
@@ -159,8 +154,7 @@ function capture() {
 
         loadPotholes();
       })
-      .catch(err => {
-        console.error(err);
+      .catch(() => {
         statusText.innerText = "❌ AI analysis failed";
       });
   });
@@ -168,7 +162,6 @@ function capture() {
 
 // ---------- LOAD POTHOLES ----------
 function loadPotholes() {
-  // Clear old markers
   potholeMarkers.forEach(m => map.removeLayer(m));
   potholeMarkers = [];
 
@@ -196,8 +189,13 @@ function loadPotholes() {
 // ---------- ON LOAD ----------
 requestLocation();
 loadPotholes();
-</script>
 
+// 🌍 GLOBAL SHARED MAP VISIBILITY
+// Any pothole detected by any user appears for all users
+setInterval(() => {
+  loadPotholes();
+}, 5000);
+</script>
 
 </body>
 </html>
