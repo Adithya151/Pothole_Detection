@@ -1,27 +1,26 @@
 import os
 import sqlite3
+import requests
 from datetime import datetime
-from flask import Flask, request, jsonify, render_template
-from inference_sdk import InferenceHTTPClient
-from report import generate_road_health_report
-from flask import send_file
+from flask import Flask, request, jsonify, render_template, send_file
 from dotenv import load_dotenv
-load_dotenv()
+from report import generate_road_health_report
 
+load_dotenv()
 
 app = Flask(__name__)
 
+# ---------- CONFIG ----------
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# 🔐 Roboflow Inference Client
-client = InferenceHTTPClient(
-    api_url="https://serverless.roboflow.com",
-    api_key=os.environ.get("ROBOFLOW_API_KEY")
-)
+ROBOFLOW_API_KEY = os.environ.get("ROBOFLOW_API_KEY")
 
-WORKSPACE_NAME = "adi-work"
-WORKFLOW_ID = "detect-count-and-visualize"
+# ✅ YOUR ACTUAL MODEL DETAILS (FROM ROBOFLOW)
+ROBOFLOW_MODEL = "pothole-detection-orxff-ak0bb"
+ROBOFLOW_VERSION = "1"
+
+ROBOFLOW_URL = f"https://detect.roboflow.com/{ROBOFLOW_MODEL}/{ROBOFLOW_VERSION}"
 
 # ---------- DATABASE ----------
 def init_db():
@@ -52,11 +51,10 @@ def home():
 def detect_page():
     return render_template("detect.html")
 
-# ---------- DETECTION ----------
+# ---------- DETECTION (ROBLOWFLOW REST API) ----------
 @app.route("/detect", methods=["POST"])
 def detect():
     try:
-        # 1️⃣ Read inputs
         image = request.files["image"]
         lat = float(request.form.get("latitude", 0))
         lon = float(request.form.get("longitude", 0))
@@ -64,23 +62,16 @@ def detect():
         image_path = os.path.join(UPLOAD_FOLDER, "capture.jpg")
         image.save(image_path)
 
-        # 2️⃣ Run Roboflow workflow (EXACTLY as docs say)
-        result = client.run_workflow(
-            workspace_name="adi-work",
-            workflow_id="detect-count-and-visualize",
-            images={"image": image_path},
-            use_cache=True
-        )
+        # 🔁 CALL ROBOFLOW REST API
+        with open(image_path, "rb") as img:
+            response = requests.post(
+                ROBOFLOW_URL,
+                params={"api_key": ROBOFLOW_API_KEY},
+                files={"file": img}
+            )
 
-        # 3️⃣ SAFE parsing
-        outputs = result.get("outputs")
-        if not outputs:
-            return jsonify({
-                "status": "error",
-                "message": "No outputs from Roboflow"
-            }), 500
-
-        predictions = outputs[0].get("predictions", [])
+        result = response.json()
+        predictions = result.get("predictions", [])
 
         detections = []
 
@@ -116,21 +107,19 @@ def detect():
         conn.commit()
         conn.close()
 
-        # 4️⃣ Return clean response to frontend
         return jsonify({
             "status": "success",
             "count": len(detections),
             "detections": detections,
-            "fps": "Roboflow API"
+            "fps": "Roboflow REST API"
         })
 
     except Exception as e:
-        print("❌ Roboflow Inference Error:", e)
+        print("❌ DETECTION ERROR:", e)
         return jsonify({
             "status": "error",
             "message": str(e)
         }), 500
-
 
 # ---------- MAP DATA ----------
 @app.route("/api/potholes")
@@ -138,19 +127,19 @@ def get_potholes():
     conn = sqlite3.connect("potholes.db")
     c = conn.cursor()
     rows = c.execute("""
-        SELECT latitude, longitude, severity FROM potholes
+        SELECT latitude, longitude, severity
+        FROM potholes
     """).fetchall()
     conn.close()
 
     return jsonify([
         {"lat": r[0], "lon": r[1], "severity": r[2]} for r in rows
     ])
-    
-    
+
+# ---------- REPORT ----------
 @app.route("/report")
 def report_form():
     return render_template("report_form.html")
-
 
 @app.route("/generate-report", methods=["POST"])
 def generate_report():
@@ -180,6 +169,6 @@ def generate_report():
 
     return send_file(output_path, as_attachment=True)
 
-
+# ---------- RUN ----------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
